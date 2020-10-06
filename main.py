@@ -101,8 +101,24 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
 if val_ds:
     print("Val dataset prepared successfully")
 
+# checker
+import cv2
+import numpy as np
+print(type(train_ds))
+it = iter(train_ds)
+elem = next(it)
+print(elem[0][0].numpy)
+img = elem[0][0].numpy()
+print(img)
+cv2.imwrite('checker1.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+
+img = elem[0][1].numpy()
+print(img)
+cv2.imwrite('checker2.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
+print(elem[1][1])
+
 # in the following lines we will make sure that we use our memory properly while reading
-# the images for trainig. Cache keeps images in memory after they were loaded. Prefetch
+# the images for training. Cache keeps images in memory after they were loaded. Prefetch
 # overlaps data preprocessing and model execution while training.
 
 AUTOTUNE = tf.data.experimental.AUTOTUNE
@@ -111,7 +127,7 @@ train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
 val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
 # get the model
-model = get_model(n_cl)
+model = get_model()
 
 # save model callback
 list_of_callbacks = []
@@ -122,7 +138,7 @@ list_of_callbacks.append(model_checkpoint_callback)
 
 # compile the model
 model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              loss=tf.keras.losses.BinaryCrossentropy(),
               metrics=['accuracy', precision_m, recall_m])
 
 # train the model

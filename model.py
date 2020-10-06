@@ -4,7 +4,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras import layers
 
 
-def get_model(n_cl):
+def get_model():
     return Sequential([
         data_augmentation_layer(),
         layers.experimental.preprocessing.Rescaling(1. / 255),
@@ -18,7 +18,7 @@ def get_model(n_cl):
         layers.MaxPooling2D(),
         layers.Conv2D(256, 3, padding='same', activation='relu'),
         layers.GlobalAveragePooling2D(),
-        layers.Dense(n_cl)
+        layers.Dense(1, activation='sigmoid')
     ])
 
 
