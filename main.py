@@ -48,7 +48,7 @@ for img in image_anns:
         tomato_images.append(img)
     else:
         no_tomato_images.append(img)
-print("Total number of images: {}".format(len(os.listdir('assignment_imgs'))))
+print("Total number of images: {}".format(len(os.listdir(folder_path + '/assignment_imgs'))))
 print("We have {} tomato images".format(len(tomato_images)))
 print("We have {} images without tomatoes".format(len(no_tomato_images)))
 
