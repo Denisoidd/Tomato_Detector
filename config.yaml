@@ -5,3 +5,4 @@ train:
   ep: 15
   im_h: 600
   im_w: 600
+  save_path: saved_model/

@@ -6,6 +6,7 @@ import tensorflow as tf
 import shutil
 
 from utils import load_config
+from model import get_model
 
 # get the directory path
 folder_path = str(pathlib.Path(__file__).parent.absolute())
@@ -103,3 +104,37 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
 
 if val_ds:
     print("Val dataset prepared successfully")
+
+# in the following lines we will make sure that we use our memory properly while reading
+# the images for trainig. Cache keeps images in memory after they were loaded. Prefetch
+# overlaps data preprocessing and model execution while training.
+
+AUTOTUNE = tf.data.experimental.AUTOTUNE
+
+train_ds = train_ds.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
+val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+
+# get the model
+model = get_model(im_h, im_w, n_cl)
+model.summary()
+
+# save model callback
+list_of_callbacks = []
+model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+    filepath=str(pathlib.Path(__file__).parent.absolute()) + config["train"]["save_path"],
+    save_freq=1)
+list_of_callbacks.append(model_checkpoint_callback)
+
+
+# compile the model
+model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['precision', 'recall'])
+
+# train the model
+history = model.fit(
+    train_ds,
+    validation_data=val_ds,
+    callbacks=list_of_callbacks,
+    epochs=ep
+)
