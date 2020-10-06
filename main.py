@@ -5,7 +5,7 @@ import pathlib
 import tensorflow as tf
 import shutil
 
-from utils import load_config
+from utils import load_config, precision_m, recall_m
 from model import get_model
 
 # get the directory path
@@ -64,10 +64,6 @@ if not os.path.exists(folder_path + '/data/without_tomatoes'):
 if not os.path.exists(folder_path + '/data/with_tomatoes'):
     os.makedirs(folder_path + '/data/with_tomatoes')
 
-print(os.listdir(folder_path + '/data/with_tomatoes/'))
-if tomato_images[0] in os.listdir(folder_path + '/data/with_tomatoes/'):
-    print("I'm inside")
-
 # copy all tomato pictures to another dir
 for img_name in tomato_images:
     # check if image has not already copied
@@ -125,11 +121,10 @@ model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
     save_freq=1)
 list_of_callbacks.append(model_checkpoint_callback)
 
-
 # compile the model
 model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['precision', 'recall'])
+              metrics=['accuracy', precision_m, recall_m])
 
 # train the model
 history = model.fit(
