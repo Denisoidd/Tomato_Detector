@@ -56,25 +56,25 @@ print("We have {} images without tomatoes".format(len(no_tomato_images)))
 if not os.path.exists(folder_path + '/data'):
     os.makedirs(folder_path + '/data')
 
-# create with_tomatoes and without_tomatoes directories
-if not os.path.exists(folder_path + '/data/without_tomatoes'):
-    os.makedirs(folder_path + '/data/without_tomatoes')
+# create 0 directory
+if not os.path.exists(folder_path + '/data/0'):
+    os.makedirs(folder_path + '/data/0')
 
-# create with_tomatoes and without_tomatoes directories
-if not os.path.exists(folder_path + '/data/with_tomatoes'):
-    os.makedirs(folder_path + '/data/with_tomatoes')
+# create 1 directory
+if not os.path.exists(folder_path + '/data/1'):
+    os.makedirs(folder_path + '/data/1')
 
-# copy all tomato pictures to another dir
+# copy all tomato pictures to 1 dir
 for img_name in tomato_images:
     # check if image has not already copied
-    if img_name not in os.listdir(folder_path + '/data/with_tomatoes'):
-        shutil.copy(folder_path + '/assignment_imgs/' + img_name, folder_path + '/data/with_tomatoes')
+    if img_name not in os.listdir(folder_path + '/data/1'):
+        shutil.copy(folder_path + '/assignment_imgs/' + img_name, folder_path + '/data/1')
 
-# copy all pictures without tomato to another dir
+# copy all pictures without tomato 0 dir
 for img_name in no_tomato_images:
     # check if image has not already copied
-    if img_name not in os.listdir(folder_path + '/data/without_tomatoes'):
-        shutil.copy(folder_path + '/assignment_imgs/' + img_name, folder_path + '/data/without_tomatoes')
+    if img_name not in os.listdir(folder_path + '/data/0'):
+        shutil.copy(folder_path + '/assignment_imgs/' + img_name, folder_path + '/data/0')
 
 # divide data on train and validation
 # load train part
@@ -100,22 +100,6 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
 
 if val_ds:
     print("Val dataset prepared successfully")
-
-# checker
-import cv2
-import numpy as np
-print(type(train_ds))
-it = iter(train_ds)
-elem = next(it)
-print(elem[0][0].numpy)
-img = elem[0][0].numpy()
-print(img)
-cv2.imwrite('checker1.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
-
-img = elem[0][1].numpy()
-print(img)
-cv2.imwrite('checker2.jpg', cv2.cvtColor(img, cv2.COLOR_RGB2BGR))
-print(elem[1][1])
 
 # in the following lines we will make sure that we use our memory properly while reading
 # the images for training. Cache keeps images in memory after they were loaded. Prefetch

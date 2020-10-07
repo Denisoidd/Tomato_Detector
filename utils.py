@@ -28,4 +28,4 @@ def precision_m(y_true, y_pred):
 def load_image(path, resize=False):
     if resize:
         return np.expand_dims(cv2.resize(cv2.imread(path), (256, 256)), axis=0)
-    return cv2.imread(path)
+    return np.expand_dims(cv2.imread(path), axis=0)
