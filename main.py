@@ -5,7 +5,7 @@ import pathlib
 import tensorflow as tf
 import shutil
 
-from utils import load_config, precision_m, recall_m
+from utils import load_config
 from model import get_model
 
 # get the directory path
@@ -123,7 +123,7 @@ list_of_callbacks.append(model_checkpoint_callback)
 # compile the model
 model.compile(optimizer='adam',
               loss=tf.keras.losses.BinaryCrossentropy(),
-              metrics=['accuracy', precision_m, recall_m])
+              metrics=['accuracy'])
 
 # train the model
 history = model.fit(
