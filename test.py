@@ -11,9 +11,6 @@ def test(name):
     # load saved model
     test_model = load_model(str(pathlib.Path(__file__).parent.absolute()) + "/saved_model_final", compile=False)
 
-    # summary
-    test_model.summary()
-
     # create the model which will extract last convolution layer, global average pooling and dense connections
     extractor = Model(inputs=test_model.inputs,
                       outputs=[test_model.get_layer('global_average_pooling2d').output,
@@ -38,6 +35,7 @@ def test(name):
     plt.savefig('activation.png')
 
     # get result
+    print()
     if test_model(im) > 0.1:
         print("There are some tomatoes in the food")
     else:
