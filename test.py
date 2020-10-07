@@ -19,33 +19,19 @@ extractor = Model(inputs=test_model.inputs,
 # load image
 im = load_image(str(pathlib.Path(__file__).parent.absolute()) + '/test_data/4.jpeg', resize=True)
 
-# print extracted features
+# extract features from the image
 features = extractor(im)
-# print(features)
 
 # print dense weights
 weights = np.squeeze(extractor.get_layer('dense').get_weights()[0])
-print("Shape of weights is {}".format(weights.shape))
 
 # multiply conv layers by weights
 mult = np.sum(features[1] * weights, axis=-1)
 
-# normalize data
-
-
-print("final matrix")
-print(mult)
+# save activation
 plt.matshow(np.squeeze(mult), cmap='viridis')
-print('////')
-print(np.min(mult), np.max(mult))
-# plt.clim(np.min(mult), np.max(mult))
 plt.colorbar()
 plt.savefig('activation.png')
-
-cv2.imwrite('activation.jpg', np.squeeze(mult) * 255)
-
-# print(features[1] * weights)
-
 
 # get result
 print(test_model(im))
