@@ -7,7 +7,10 @@ from tensorflow.keras.models import load_model, Model
 from utils import load_image
 
 # load saved model
-test_model = load_model(str(pathlib.Path(__file__).parent.absolute()) + "/saved_model_30ep_bin_corlabels", compile=False)
+test_model = load_model(str(pathlib.Path(__file__).parent.absolute()) + "/saved_model_final", compile=False)
+
+# summary
+test_model.summary()
 
 # create the model which will extract last convolution layer, global average pooling and dense connections
 extractor = Model(inputs=test_model.inputs,
@@ -17,7 +20,7 @@ extractor = Model(inputs=test_model.inputs,
 
 
 # load image
-im = load_image(str(pathlib.Path(__file__).parent.absolute()) + '/test_data/4.jpeg', resize=True)
+im = load_image(str(pathlib.Path(__file__).parent.absolute()) + '/test_data/1.jpg', resize=True)
 
 # extract features from the image
 features = extractor(im)
@@ -34,9 +37,7 @@ plt.colorbar()
 plt.savefig('activation.png')
 
 # get result
-print(test_model(im))
-# print(test_model.predict(im))
-if test_model(im) > 0.15:
+if test_model(im) > 0.1:
     print("There are some tomatoes in the food")
 else:
     print("No tomatoes in the food")
