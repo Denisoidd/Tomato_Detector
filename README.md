@@ -49,9 +49,14 @@ This combination will give us approximate positions of detected tomatoes as it w
 
 ## Results
 
-Talk about loss results of training and accuracy. Put graph here.
+![Loss](https://github.com/Denisoidd/Tomato_Detector/blob/master/images/Loss_graph.png)
 
-Put some images of discriminative localization.
+As we can see at this image training and validation losses go down what means that model is learning correctly. At the end there is a beginning of the plato so 30 epochs for train
+process is near the optimal value.
+
+![Accuracy](https://github.com/Denisoidd/Tomato_Detector/blob/master/images/Accuracy_graph.png)
+
+For the accuracy we see that validation and train accuracies go up. However in that case of unbalanced data it's important to measure other characteristics such as Precision and Recall. 
 
 ## Future work
 
